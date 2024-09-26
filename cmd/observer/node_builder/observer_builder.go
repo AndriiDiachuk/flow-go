@@ -157,6 +157,7 @@ type ObserverServiceConfig struct {
 	logTxTimeToFinalized                 bool
 	logTxTimeToExecuted                  bool
 	logTxTimeToFinalizedExecuted         bool
+	logTxTimeToSealed                    bool
 	executionDataSyncEnabled             bool
 	executionDataIndexingEnabled         bool
 	executionDataDBMode                  string
@@ -1751,6 +1752,7 @@ func (builder *ObserverServiceBuilder) enqueueRPCServer() {
 			builder.logTxTimeToFinalized,
 			builder.logTxTimeToExecuted,
 			builder.logTxTimeToFinalizedExecuted,
+			builder.logTxTimeToSealed,
 		)
 		return nil
 	})

@@ -149,6 +149,7 @@ type AccessNodeConfig struct {
 	logTxTimeToFinalized                 bool
 	logTxTimeToExecuted                  bool
 	logTxTimeToFinalizedExecuted         bool
+	logTxTimeToSealed                    bool
 	retryEnabled                         bool
 	rpcMetricsEnabled                    bool
 	executionDataSyncEnabled             bool
@@ -1677,6 +1678,7 @@ func (builder *FlowAccessNodeBuilder) Build() (cmd.Node, error) {
 				builder.logTxTimeToFinalized,
 				builder.logTxTimeToExecuted,
 				builder.logTxTimeToFinalizedExecuted,
+				builder.logTxTimeToSealed,
 			)
 			return nil
 		}).

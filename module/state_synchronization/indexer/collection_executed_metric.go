@@ -73,6 +73,34 @@ func (c *CollectionExecutedMetricImpl) BlockFinalized(block *flow.Block) {
 	now := time.Now().UTC()
 	blockID := block.ID()
 
+	//c.blocks.ByID(block.Payload.Seals[0].BlockID)
+
+	// create new struct where I will put transactions per block that are finalized
+	for _, s := range block.Payload.Seals {
+		block, err := c.blocks.ByID(s.BlockID)
+		if err != nil {
+			c.log.Warn().Err(err).Msg("could not find block")
+			continue
+		}
+
+		for _, g := range block.Payload.Guarantees {
+			l, err := c.collections.LightByID(g.CollectionID)
+
+			if errors.Is(err, storage.ErrNotFound) {
+				c.collectionsToMarkFinalized.Add(g.CollectionID, now)
+				continue
+			} else if err != nil {
+				c.log.Warn().Err(err).Str("collection_id", g.CollectionID.String()).
+					Msg("could not track tx sealed metric: finalized collection not found locally")
+				continue
+			}
+
+			for _, t := range l.Transactions {
+				c.accessMetrics.TransactionSealed(t, now)
+			}
+		}
+	}
+
 	// mark all transactions as finalized
 	// TODO: sample to reduce performance overhead
 	for _, g := range block.Payload.Guarantees {

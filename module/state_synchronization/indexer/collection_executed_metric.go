@@ -108,8 +108,8 @@ func (c *CollectionExecutedMetricImpl) BlockFinalized(block *flow.Block) {
 		}
 
 		if block.ID() == txToBlock.blockId && len(txToBlock.transactions) != 0 {
-			for _, tx := range txToBlock.transactions {
-				c.accessMetrics.TransactionSealed(tx, now)
+			for _, t := range txToBlock.transactions {
+				c.accessMetrics.TransactionSealed(t, now)
 			}
 		}
 	}

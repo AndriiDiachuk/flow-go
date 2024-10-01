@@ -92,8 +92,6 @@ func (c *CollectionExecutedMetricImpl) BlockFinalized(block *flow.Block) {
 			continue
 		}
 
-		//txToBlock.transactions = l.Transactions
-
 		for _, t := range l.Transactions {
 			txToBlock.transactions = append(txToBlock.transactions, t)
 			c.accessMetrics.TransactionFinalized(t, now)
